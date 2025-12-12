@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio de Privacidad Digital - Análisis Comparativo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #8b5cf6;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+            --bg-light: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --tiktok: #fe2c55;
+            --instagram: #e4405f;
+            --youtube: #ff0000;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none"/><circle cx="50" cy="50" r="40" stroke="white" stroke-width="1" fill="none" opacity="0.1"/></svg>');
+            opacity: 0.3;
+        }
+
+        header .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--bg-card);
+            box-shadow: 0 2px 8px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px 20px;
+        }
+
+        nav button {
+            padding: 10px 20px;
+            border: 2px solid var(--border);
+            background: white;
+            color: var(--text-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        nav button:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        nav button.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Sections */
+        section {
+            padding: 60px 0;
+            display: none;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .section-title h2 {
+            font-size: 2em;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .section-title p {
+            color: var(--text-secondary);
+            font-size: 0.95em;
+        }
+
+        /* Platform Cards */
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .platform-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .platform-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+
+        .platform-card.tiktok {
+            border-color: var(--tiktok);
+        }
+
+        .platform-card.instagram {
+            border-color: var(--instagram);
+        }
+
+        .platform-card.youtube {
+            border-color: var(--youtube);
+        }
+
+        .platform-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .platform-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .platform-icon.tiktok {
+            background: var(--tiktok);
+        }
+
+        .platform-icon.instagram {
+            background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+        }
+
+        .platform-icon.youtube {
+            background: var(--youtube);
+        }
+
+        .platform-name {
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+
+        .platform-summary {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .key-points {
+            list-style: none;
+        }
+
+        .key-points li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            color: var(--text-primary);
+        }
+
+        .key-points li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* Comparison Table */
+        .table-container {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .table-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 2px;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--bg-light);
+        }
+
+        th {
+            padding: 20px;
+            text-align: left;
+            font-weight: 700;
+            border-bottom: 2px solid var(--border);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        tbody tr:hover {
+            background: var(--bg-light);
+        }
+
+        .category-cell {
+            font-weight: 600;
+            color: var(--primary);
+            min-width: 200px;
+        }
+
+        /* Case Studies */
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .case-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 12px var(--shadow);
+            border-left: 4px solid var(--danger);
+            transition: all 0.3s ease;
+        }
+
+        .case-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+
+        .case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .case-category {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .case-category.penal {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .case-category.laboral {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .case-category.educativo {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .case-date {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .case-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .case-section {
+            margin-bottom: 15px;
+        }
+
+        .case-section h4 {
+            font-size: 13px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .case-section p {
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        .case-source {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Filter Buttons */
+        .filter-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Risk Calculator */
+        .risk-intro {
+            background: linear-gradient(135deg, #fee2e2 0%, #fef3c7 100%);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 2px solid #fca5a5;
+        }
+
+        .risk-intro h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: var(--danger);
+        }
+
+        .risk-intro p {
+            color: var(--text-primary);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .question-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            padding: 15px 20px;
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+            background: var(--bg-light);
+        }
+
+        .option-btn.selected {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .calculate-btn {
+            padding: 15px 40px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+        }
+
+        .calculate-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .calculate-btn:disabled {
+            background: var(--text-secondary);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 12px var(--shadow);
+            text-align: center;
+            margin-top: 30px;
+            border: 3px solid var(--danger);
+        }
+
+        .risk-score {
+            font-size: 5em;
+            font-weight: 800;
+            color: var(--danger);
+            margin: 20px 0;
+        }
+
+        .risk-level {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .risk-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .breakdown-item {
+            padding: 15px;
+            background: var(--bg-light);
+            border-radius: 8px;
+        }
+
+        .breakdown-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .breakdown-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-primary);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        footer p {
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .platform-grid,
+            .case-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 12px;
+            }
+
+            .risk-score {
+                font-size: 3em;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        section.active {
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .scroll-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        .scroll-top.visible {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="badge">
+                🛡️ Informe de Investigación 2025
+            </div>
+            <h1>Laboratorio de <span style="color: #fbbf24;">Privacidad Digital</span></h1>
+            <p class="subtitle">
+                Un análisis técnico y comparativo de cómo TikTok, Instagram y YouTube recopilan, procesan y comparten tus datos personales.
+            </p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <button class="nav-btn active" data-section="plataformas">📊 Plataformas</button>
+            <button class="nav-btn" data-section="comparacion">⚖️ Comparación</button>
+            <button class="nav-btn" data-section="casos">⚠️ Casos Reales</button>
+            <button class="nav-btn" data-section="calculadora">🔍 Calculadora de Riesgo</button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Plataformas Section -->
+        <section id="plataformas" class="active">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-icon">💾</div>
+                    <div class="section-title">
+                        <h2>Sujetos de Estudio</h2>
+                        <p>Análisis individual de las plataformas investigadas</p>
+                    </div>
+                </div>
+
+                <div class="platform-grid">
+                    <!-- TikTok Card -->
+                    <div class="platform-card tiktok">
+                        <div class="platform-header">
+                            <div class="platform-icon tiktok">TT</div>
+                            <div class="platform-name">TikTok</div>
+                        </div>
+                        <p class="platform-summary">
+                            TikTok se centra en la viralidad y el contenido rápido. Su política destaca por la recopilación detallada de interacciones y, notablemente, patrones de pulsación de teclas y datos biométricos en ciertas regiones. La personalización es agresiva, alimentando su famoso algoritmo 'Para Ti'.
+                        </p>
+                        <ul class="key-points">
+                            <li>Recopila patrones de ritmo de tecleo.</li>
+                            <li>Puede recolectar datos biométricos con permiso.</li>
+                            <li>Comparte datos con una amplia red de socios comerciales.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Instagram Card -->
+                    <div class="platform-card instagram">
+                        <div class="platform-header">
+                            <div class="platform-icon instagram">IG</div>
+                            <div class="platform-name">Instagram (Meta)</div>
+                        </div>
+                        <p class="platform-summary">
+                            Como parte de Meta, Instagram tiene una política de datos inmensa que se entrelaza con Facebook y Messenger. Recopila datos no solo de lo que haces en la app, sino de tu actividad en otros sitios web que usan herramientas de Meta. El enfoque está en la construcción de un perfil publicitario muy preciso.
+                        </p>
+                        <ul class="key-points">
+                            <li>Rastreo cruzado con otros productos de Meta.</li>
+                            <li>Recopila datos de 'Actividad fuera de Meta'.</li>
+                            <li>Uso intensivo de datos para IA y realidad aumentada.</li>
+                        </ul>
+                    </div>
+
+                    <!-- YouTube Card -->
+                    <div class="platform-card youtube">
+                        <div class="platform-header">
+                            <div class="platform-icon youtube">YT</div>
+                            <div class="platform-name">YouTube (Google)</div>
+                        </div>
+                        <p class="platform-summary">
+                            Bajo el paraguas de Google, YouTube recopila datos profundamente integrados con el ecosistema de búsqueda y Android. Su enfoque es mejorar la recomendación de contenido y la publicidad contextual. Destaca por sus herramientas de control de usuario como la 'Eliminación automática'.
+                        </p>
+                        <ul class="key-points">
+                            <li>Integración profunda con Búsqueda y Mapas.</li>
+                            <li>Fuertes controles de privacidad (Auto-delete).</li>
+                            <li>No vende información personal, la usa para ads propios.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparación Section -->
+        <section id="comparacion">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-icon">⚖️</div>
+                    <div class="section-title">
+                        <h2>Matriz Comparativa</h2>
+                        <p>Desglose detallado de políticas lado a lado</p>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-banner">
+                        DATOS NORMALIZADOS v.2025.12
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Categoría</th>
+                                <th>TikTok</th>
+                                <th>Instagram</th>
+                                <th>YouTube</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comparison-table-body">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Casos Reales Section -->
+        <section id="casos">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-icon">⚠️</div>
+                    <div class="section-title">
+                        <h2>Consecuencias Reales</h2>
+                        <p>Casos documentados en Argentina sobre el impacto legal de las redes</p>
+                    </div>
+                </div>
+
+                <div class="filter-container">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="Penal">Penal</button>
+                    <button class="filter-btn" data-filter="Laboral">Laboral</button>
+                    <button class="filter-btn" data-filter="Educativo">Educativo</button>
+                </div>
+
+                <div class="case-grid" id="case-grid">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Calculadora Section -->
+        <section id="calculadora">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-icon">🔍</div>
+                    <div class="section-title">
+                        <h2>Calculadora de Riesgo Digital</h2>
+                        <p>Descubre tu nivel de exposición en redes sociales</p>
+                    </div>
+                </div>
+
+                <div class="risk-intro">
+                    <h3>⚠️ Evalúa tu Riesgo Digital</h3>
+                    <p>
+                        Responde las siguientes preguntas sobre tu uso de TikTok, Instagram y YouTube para recibir una puntuación personalizada de riesgo. Esta herramienta te ayudará a identificar áreas donde puedes mejorar tu privacidad y seguridad digital.
+                    </p>
+                    <p style="font-weight: 600; color: var(--danger);">
+                        Nota: Tus respuestas no se almacenan ni se comparten. Todo el cálculo se realiza localmente en tu navegador.
+                    </p>
+                </div>
+
+                <div id="questions-container">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+
+                <button class="calculate-btn" id="calculate-btn" disabled>Calcular Mi Riesgo</button>
+
+                <div id="result-container" style="display: none;">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p><strong>Laboratorio de Privacidad Digital</strong> - Informe de Investigación 2025</p>
+            <p style="margin-top: 10px;">Análisis comparativo de políticas de privacidad: TikTok, Instagram y YouTube</p>
+            <p style="margin-top: 10px; font-size: 14px;">Casos documentados en Argentina | Fuentes: Chequeado, LA NACIÓN, Clarin, WeLiveSecurity</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scroll-top">↑</button>
+
+    <script>
+        // Data
+        const comparisonData = [
+            {
+                category: "Recopilación de Datos del Usuario",
+                tiktok: "Contenido (videos, fotos), mensajes, contactos, compras, datos biométricos (con permiso).",
+                instagram: "Contenido (posts, stories), mensajes, interacciones IA, cámara/galería, compras, hashtags.",
+                youtube: "Contenido creado, historial de búsqueda/reproducción, voz/audio, actividad de compra."
+            },
+            {
+                category: "Recopilación Automática",
+                tiktok: "Info técnica, pulsaciones de teclas, IP, ubicación (sim/ip), uso, cookies.",
+                instagram: "Info dispositivo, señales, red, cookies, ubicación, actividad en otras apps.",
+                youtube: "Info navegador/dispositivo, IP, informes fallos, actividad sistema, sensores."
+            },
+            {
+                category: "Datos de Terceros",
+                tiktok: "Socios publicitarios, vendedores, plataformas de terceros, fuentes públicas.",
+                instagram: "Socios, proveedores, desarrolladores, editores, fuentes públicas, bases de datos.",
+                youtube: "Partners de confianza, directorios, marketing, seguridad, fuentes públicas."
+            },
+            {
+                category: "Uso de la Información",
+                tiktok: "Personalización, anuncios, moderación, seguridad, marketing, mejoras de plataforma.",
+                instagram: "Personalización feeds/anuncios, seguridad, medición, comunicación, investigación.",
+                youtube: "Prestar/mejorar servicios, personalización, nuevos servicios, seguridad, medición."
+            },
+            {
+                category: "Compartir Información",
+                tiktok: "Socios publicidad, vendedores, plataformas terceros, autoridades.",
+                instagram: "Socios integrados, proveedores, investigadores, legal. No venden datos.",
+                youtube: "Con consentimiento, administradores, procesamiento externo, legal. No venden datos."
+            },
+            {
+                category: "Derechos del Usuario",
+                tiktok: "Acceso, corrección, eliminación, portabilidad, oposición, gestión cookies.",
+                instagram: "Ver, descargar, eliminar, gestionar anuncios, actividad fuera de Meta.",
+                youtube: "Acceso, exportación, eliminación, revisión privacidad, controles actividad."
+            },
+            {
+                category: "Transferencias Internacionales",
+                tiktok: "Sí, con protecciones adecuadas (cláusulas contractuales, etc.).",
+                instagram: "Sí, infraestructura global, con protecciones legales.",
+                youtube: "Sí, servidores en todo el mundo, con marcos de transferencia."
+            }
+        ];
+
+        const caseStudies = [
+            {
+                id: "caso-chaco-deepfakes",
+                title: "Deepfakes Pornográficos en Escuela Don Bosco: IA para Crear Contenido Sexual de Menores",
+                category: "Penal",
+                date: "Octubre de 2024",
+                summary: "En la escuela secundaria Don Bosco de Resistencia, Chaco, un grupo de alumnos tomó fotos de sus compañeras directamente de Instagram y utilizó herramientas de inteligencia artificial para crear deepfakes pornográficos que mostraban a las menores 'desnudas'. Posteriormente, ofrecieron la venta de estas imágenes falsas a través de WhatsApp y Telegram. Al menos 7 adolescentes fueron identificadas como víctimas.",
+                outcome: "Las víctimas descubrieron lo ocurrido y comunicaron la situación a sus padres. Los padres de los acusados se presentaron en la escuela manifestando disposición para resolver la situación. El caso expone un vacío legal: aunque la Ley Olimpia reconoce la violencia sexual digital, la creación de deepfakes pornográficos de menores es un área legal aún en desarrollo. No se reportaron consecuencias legales significativas inicialmente.",
+                lesson: "Las herramientas de IA para crear deepfakes están al alcance de un clic para adolescentes. Los menores son especialmente vulnerables porque sus perfiles de Instagram suelen ser públicos. Las instituciones educativas carecen de protocolos para abordar estos casos. El impacto psicológico es grave, especialmente cuando adultos desconocidos contactan a las víctimas creyendo que las imágenes son reales.",
+                source: "Chequeado / MDZ / Reportes de Resistencia, Chaco"
+            },
+            {
+                id: "caso-instagram-promo",
+                title: "Perfiles 'Promo' en Instagram: Violación de Privacidad Entre Menores",
+                category: "Educativo",
+                date: "2017-2019 (Práctica Documentada)",
+                summary: "En Argentina, adolescentes crearon perfiles públicos de Instagram llamados 'perfiles PROMO' durante el último año de educación secundaria. Estos perfiles recopilaban fotos y videos de compañeros de clase, frecuentemente sin consentimiento, incluyendo situaciones incómodas como personas dormidas, intoxicadas, en sanitarios, e incluso prácticas de 'upskirt' (fotografías sin autorización debajo de ropa).",
+                outcome: "Los perfiles permanecieron públicos, exponiendo permanentemente la privacidad de menores. Aunque algunos casos fueron reportados, no hubo consecuencias legales significativas. El fenómeno evidenció la falta de educación sobre consentimiento digital y privacidad entre adolescentes, así como la incapacidad de las instituciones para abordar estas prácticas.",
+                lesson: "La cultura de las redes sociales puede llevar a violaciones sistemáticas de privacidad entre menores. La sobreexposición digital crea una 'huella digital' extensa y potencialmente dañina que afecta oportunidades futuras en universidades y empleos. La educación sobre consentimiento y privacidad es fundamental.",
+                source: "WeLiveSecurity / Argentina Cibersegura"
+            },
+            {
+                id: "caso-bormape-difamacion",
+                title: "Difamación Digital: El Caso de Antonella Bormape",
+                category: "Educativo",
+                date: "23 de Abril de 2024",
+                summary: "Antonella Bormape, una joven abogada y dirigente universitaria de 27 años, fue víctima de un ataque coordinado de trolls en redes sociales. Acusada falsamente de ser 'ñoqui de la universidad' y de llevar una década intentando terminar Ciencias Políticas, la campaña de difamación buscaba desacreditar su participación en la marcha en defensa de la educación pública.",
+                outcome: "Se comprobó que todas las acusaciones eran falsas: Bormape ya se había graduado con promedio 9,33, fue presidenta del Centro de Estudiantes con 53% de los votos, y ganadora de la beca 'Europa Otzenhausen'. Aunque el apoyo comunitario permitió desmentir rápidamente las falsedades, el caso expone el riesgo de campañas de difamación coordinadas contra jóvenes líderes.",
+                lesson: "La difamación digital coordinada puede afectar gravemente el futuro laboral y educativo de jóvenes, especialmente líderes. Las falsedades se propagan más rápido que la verdad, y aunque se desmienta la información, el daño reputacional persiste.",
+                source: "En Agenda / Verificación de hechos"
+            },
+            {
+                id: "caso-ema-suicidio",
+                title: "La Tragedia de Ema: Viralización de Contenido Íntimo y Suicidio Adolescente",
+                category: "Penal",
+                date: "24 de Agosto de 2024",
+                summary: "Ema, una adolescente de 15 años con proyectos de vida, fue víctima de la viralización de un video íntimo sin su consentimiento. Un compañero de 14 años compartió el material en grupos de WhatsApp de la escuela. En menos de 24 horas, tras la indiferencia de la institución educativa, Ema se suicidó en su casa de Longchamps.",
+                outcome: "No hubo consecuencias legales significativas para el compañero que compartió el video, ya que era menor de edad. La escuela no aplicó protocolos de contención ni apoyo psicológico. Este caso expone un vacío legal: la viralización de contenido íntimo sin consentimiento no es delito en Argentina, aunque existe la Ley Olimpia que reconoce la violencia sexual digital.",
+                lesson: "La violencia digital puede ser tan destructiva como la violencia física. Las instituciones educativas carecen de protocolos para abordar estos casos. La educación digital y la contención psicológica son fundamentales para prevenir tragedias.",
+                source: "LA NACIÓN / Caso documentado por la madre Laura Sánchez"
+            },
+            {
+                id: "caso-laboral-despido",
+                title: "Despido por Posteo Injurioso: La Carga de la Prueba",
+                category: "Laboral",
+                date: "15 de Noviembre de 2023",
+                summary: "Un trabajador fue despedido con causa por su empleador, quien alegó que el empleado había realizado publicaciones ofensivas contra la empresa en Facebook. La compañía presentó capturas de pantalla certificadas por escribano como evidencia principal.",
+                outcome: "La Cámara Nacional de Apelaciones del Trabajo falló a favor del empleado. El tribunal determinó que la empresa no logró probar fehacientemente la autoría de las publicaciones. Al no poder vincular técnicamente al trabajador con el perfil y los posteos, el despido se consideró injustificado y la empresa debió pagar la indemnización completa.",
+                lesson: "Aunque las redes sociales pueden ser causal de despido, una simple captura de pantalla no es prueba suficiente. Las empresas deben demostrar la autoría mediante pericias informáticas robustas.",
+                source: "Errepar / CNAT Sala VIII"
+            },
+            {
+                id: "caso-penal-grooming",
+                title: "De Grooming a Abuso Sexual: El Caso de la 'Sextorsión'",
+                category: "Penal",
+                date: "19 de Mayo de 2023",
+                summary: "Un joven de 23 años extorsionó a una adolescente de 17 a través de redes sociales para obtener material íntimo. Inicialmente, el caso se caratuló como 'grooming' (ciberacoso), un delito que penaliza el contacto con fines sexuales.",
+                outcome: "En un fallo inédito, la jueza Karina Andrade cambió la carátula a 'Abuso Sexual Simple'. Consideró que al obligar a la víctima a enviar material bajo coacción, el delito sexual se había consumado, equiparando la violencia digital a la violencia física. El acusado fue condenado a prisión en suspenso.",
+                lesson: "La justicia argentina está endureciendo su postura: la violencia digital y la extorsión en redes pueden ser juzgadas con la misma gravedad que los delitos sexuales presenciales.",
+                source: "Clarín / Juzgado Penal CABA N° 15"
+            }
+        ];
+
+        const riskQuestions = [
+            {
+                id: 1,
+                text: "¿Tu perfil de Instagram o TikTok es público?",
+                category: "privacidad",
+                options: [
+                    { text: "Sí, es completamente público", risk: 20 },
+                    { text: "Solo algunos contenidos son públicos", risk: 10 },
+                    { text: "No, mi perfil es privado", risk: 0 }
+                ]
+            },
+            {
+                id: 2,
+                text: "¿Compartes tu ubicación en tiempo real en tus publicaciones?",
+                category: "privacidad",
+                options: [
+                    { text: "Sí, siempre", risk: 20 },
+                    { text: "A veces", risk: 10 },
+                    { text: "Nunca", risk: 0 }
+                ]
+            },
+            {
+                id: 3,
+                text: "¿Aceptas solicitudes de amistad o seguidores de personas desconocidas?",
+                category: "seguridad",
+                options: [
+                    { text: "Sí, acepto a todos", risk: 20 },
+                    { text: "Solo si tienen amigos en común", risk: 10 },
+                    { text: "No, solo acepto conocidos", risk: 0 }
+                ]
+            },
+            {
+                id: 4,
+                text: "¿Has compartido alguna vez contenido íntimo (fotos, videos) por redes sociales o mensajes?",
+                category: "comportamiento",
+                options: [
+                    { text: "Sí, frecuentemente", risk: 25 },
+                    { text: "Sí, alguna vez", risk: 15 },
+                    { text: "No, nunca", risk: 0 }
+                ]
+            },
+            {
+                id: 5,
+                text: "¿Cuánta información personal tienes en tu biografía (teléfono, email, dirección)?",
+                category: "datos",
+                options: [
+                    { text: "Toda mi información está visible", risk: 20 },
+                    { text: "Solo algunos datos", risk: 10 },
+                    { text: "Ninguna información personal", risk: 0 }
+                ]
+            },
+            {
+                id: 6,
+                text: "¿Has revisado y configurado las opciones de privacidad de tus redes sociales?",
+                category: "seguridad",
+                options: [
+                    { text: "No, uso la configuración predeterminada", risk: 15 },
+                    { text: "Sí, pero hace mucho tiempo", risk: 10 },
+                    { text: "Sí, las reviso regularmente", risk: 0 }
+                ]
+            },
+            {
+                id: 7,
+                text: "¿Publicas fotos o información de otras personas sin su permiso?",
+                category: "comportamiento",
+                options: [
+                    { text: "Sí, frecuentemente", risk: 20 },
+                    { text: "A veces", risk: 10 },
+                    { text: "No, siempre pido permiso", risk: 0 }
+                ]
+            },
+            {
+                id: 8,
+                text: "¿Usas autenticación de dos factores en tus cuentas?",
+                category: "seguridad",
+                options: [
+                    { text: "No sé qué es eso", risk: 20 },
+                    { text: "No, pero sé qué es", risk: 15 },
+                    { text: "Sí, en todas mis cuentas", risk: 0 }
+                ]
+            }
+        ];
+
+        // Navigation
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const section = btn.dataset.section;
+                
+                // Update active button
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Update active section
+                document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+                document.getElementById(section).classList.add('active');
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Populate comparison table
+        const tableBody = document.getElementById('comparison-table-body');
+        comparisonData.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="category-cell">${row.category}</td>
+                <td>${row.tiktok}</td>
+                <td>${row.instagram}</td>
+                <td>${row.youtube}</td>
+            `;
+            tableBody.appendChild(tr);
+        });
+
+        // Populate case studies
+        function renderCases(filter = 'all') {
+            const caseGrid = document.getElementById('case-grid');
+            caseGrid.innerHTML = '';
+            
+            const filteredCases = filter === 'all' 
+                ? caseStudies 
+                : caseStudies.filter(c => c.category === filter);
+            
+            filteredCases.forEach(caseStudy => {
+                const caseCard = document.createElement('div');
+                caseCard.className = 'case-card';
+                caseCard.innerHTML = `
+                    <div class="case-header">
+                        <span class="case-category ${caseStudy.category.toLowerCase()}">${caseStudy.category}</span>
+                        <span class="case-date">${caseStudy.date}</span>
+                    </div>
+                    <h3 class="case-title">${caseStudy.title}</h3>
+                    <div class="case-section">
+                        <h4>Resumen</h4>
+                        <p>${caseStudy.summary}</p>
+                    </div>
+                    <div class="case-section">
+                        <h4>Resultado</h4>
+                        <p>${caseStudy.outcome}</p>
+                    </div>
+                    <div class="case-section">
+                        <h4>Lección</h4>
+                        <p>${caseStudy.lesson}</p>
+                    </div>
+                    <div class="case-source">Fuente: ${caseStudy.source}</div>
+                `;
+                caseGrid.appendChild(caseCard);
+            });
+        }
+
+        renderCases();
+
+        // Filter cases
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.dataset.filter;
+                
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                renderCases(filter);
+            });
+        });
+
+        // Risk Calculator
+        const questionsContainer = document.getElementById('questions-container');
+        const calculateBtn = document.getElementById('calculate-btn');
+        const resultContainer = document.getElementById('result-container');
+        const answers = {};
+
+        riskQuestions.forEach(question => {
+            const questionCard = document.createElement('div');
+            questionCard.className = 'question-card';
+            questionCard.innerHTML = `
+                <div class="question-text">${question.id}. ${question.text}</div>
+                <div class="options">
+                    ${question.options.map((option, index) => `
+                        <button class="option-btn" data-question="${question.id}" data-risk="${option.risk}">
+                            ${option.text}
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+            questionsContainer.appendChild(questionCard);
+        });
+
+        // Handle option selection
+        document.querySelectorAll('.option-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const questionId = btn.dataset.question;
+                const risk = parseInt(btn.dataset.risk);
+                
+                // Remove selected class from siblings
+                btn.parentElement.querySelectorAll('.option-btn').forEach(b => {
+                    b.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked button
+                btn.classList.add('selected');
+                
+                // Store answer
+                answers[questionId] = risk;
+                
+                // Enable calculate button if all questions answered
+                if (Object.keys(answers).length === riskQuestions.length) {
+                    calculateBtn.disabled = false;
+                }
+            });
+        });
+
+        // Calculate risk
+        calculateBtn.addEventListener('click', () => {
+            const totalRisk = Object.values(answers).reduce((sum, risk) => sum + risk, 0);
+            const maxRisk = riskQuestions.reduce((sum, q) => sum + Math.max(...q.options.map(o => o.risk)), 0);
+            const riskPercentage = Math.round((totalRisk / maxRisk) * 100);
+            
+            let riskLevel = '';
+            let riskColor = '';
+            
+            if (riskPercentage >= 70) {
+                riskLevel = 'MUY ALTO';
+                riskColor = '#dc2626';
+            } else if (riskPercentage >= 50) {
+                riskLevel = 'ALTO';
+                riskColor = '#ea580c';
+            } else if (riskPercentage >= 30) {
+                riskLevel = 'MEDIO';
+                riskColor = '#f59e0b';
+            } else {
+                riskLevel = 'BAJO';
+                riskColor = '#10b981';
+            }
+            
+            // Calculate category scores
+            const categoryScores = {};
+            riskQuestions.forEach(q => {
+                if (!categoryScores[q.category]) {
+                    categoryScores[q.category] = { total: 0, max: 0 };
+                }
+                categoryScores[q.category].total += answers[q.id] || 0;
+                categoryScores[q.category].max += Math.max(...q.options.map(o => o.risk));
+            });
+            
+            const categoryLabels = {
+                privacidad: 'Privacidad',
+                seguridad: 'Seguridad',
+                comportamiento: 'Comportamiento',
+                datos: 'Datos Personales'
+            };
+            
+            resultContainer.innerHTML = `
+                <div class="result-card">
+                    <h3>Tu Puntuación de Riesgo</h3>
+                    <div class="risk-score" style="color: ${riskColor}">${riskPercentage}</div>
+                    <div class="risk-level" style="color: ${riskColor}">RIESGO ${riskLevel}</div>
+                    <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto;">
+                        ${riskPercentage >= 70 
+                            ? 'Tu nivel de exposición digital es muy alto. Te recomendamos revisar urgentemente tus configuraciones de privacidad y cambiar tus hábitos en redes sociales.'
+                            : riskPercentage >= 50
+                            ? 'Tu nivel de exposición digital es alto. Deberías considerar ajustar tus configuraciones de privacidad y ser más cuidadoso con la información que compartes.'
+                            : riskPercentage >= 30
+                            ? 'Tu nivel de exposición digital es moderado. Hay algunas áreas donde podrías mejorar tu privacidad y seguridad.'
+                            : 'Tu nivel de exposición digital es bajo. Mantienes buenas prácticas de privacidad, pero siempre hay espacio para mejorar.'
+                        }
+                    </p>
+                    <div class="risk-breakdown">
+                        ${Object.entries(categoryScores).map(([category, scores]) => {
+                            const categoryPercentage = Math.round((scores.total / scores.max) * 100);
+                            return `
+                                <div class="breakdown-item">
+                                    <div class="breakdown-label">${categoryLabels[category]}</div>
+                                    <div class="breakdown-value">${categoryPercentage}/100</div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+            
+            resultContainer.style.display = 'block';
+            resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+
+        // Scroll to top button
+        const scrollTopBtn = document.getElementById('scroll-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
